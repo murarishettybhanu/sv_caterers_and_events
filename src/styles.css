@@ -23,43 +23,60 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-success: var(--success);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-display: "Fraunces", Georgia, serif;
-  --font-sans: "Karla", system-ui, sans-serif;
+  --font-display: "Marcellus", "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 }
 
 :root {
-  --radius: 0.5rem;
-  --background: oklch(0.978 0.016 84);
-  --foreground: oklch(0.24 0.045 40);
-  --card: oklch(0.995 0.008 84);
-  --card-foreground: oklch(0.24 0.045 40);
-  --primary: oklch(0.36 0.115 22);
-  --primary-foreground: oklch(0.98 0.02 84);
-  --secondary: oklch(0.93 0.04 84);
-  --secondary-foreground: oklch(0.3 0.07 35);
-  --muted: oklch(0.94 0.02 84);
-  --muted-foreground: oklch(0.47 0.035 45);
-  --accent: oklch(0.72 0.13 72);
-  --accent-foreground: oklch(0.24 0.05 40);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.03 76);
-  --input: oklch(0.88 0.03 76);
-  --ring: oklch(0.72 0.13 72);
+  --radius: 0.75rem;
+
+  /* Palette — alabaster page, espresso brand, champagne-gold accent.
+     Near-black warm neutral + a single metal reads richer than a coloured brand
+     hue; the gold does the work, so it is used sparingly. */
+  --background: oklch(0.975 0.008 80);
+  --foreground: oklch(0.21 0.02 50);
+  --card: oklch(0.994 0.004 80);
+  --card-foreground: oklch(0.21 0.02 50);
+  --primary: oklch(0.25 0.028 48);
+  --primary-foreground: oklch(0.975 0.01 85);
+  --secondary: oklch(0.935 0.016 78);
+  --secondary-foreground: oklch(0.3 0.03 50);
+  --muted: oklch(0.945 0.01 80);
+  /* 4.9:1 on the alabaster page. */
+  --muted-foreground: oklch(0.44 0.02 55);
+  --accent: oklch(0.72 0.085 82);
+  --accent-foreground: oklch(0.24 0.03 50);
+  --destructive: oklch(0.52 0.19 27);
+  --success: oklch(0.48 0.1 150);
+  --border: oklch(0.885 0.012 80);
+  --input: oklch(0.85 0.016 78);
+  --ring: oklch(0.52 0.07 72);
 
   --gradient-hero: linear-gradient(
     180deg,
-    oklch(0.24 0.05 32 / 0.15) 0%,
-    oklch(0.18 0.04 32 / 0.82) 100%
+    oklch(0.2 0.02 50 / 0.18) 0%,
+    oklch(0.13 0.015 50 / 0.9) 100%
   );
-  --gradient-gold: linear-gradient(
-    100deg,
-    oklch(0.78 0.12 78) 0%,
-    oklch(0.63 0.14 58) 100%
-  );
-  --shadow-soft: 0 10px 40px -12px oklch(0.36 0.115 22 / 0.25);
+  --gradient-gold: linear-gradient(100deg, oklch(0.85 0.065 88) 0%, oklch(0.7 0.095 72) 100%);
+
+  /* Elevation: tight and low-contrast — luxury reads flatter, not puffier. */
+  --shadow-xs: 0 1px 2px oklch(0.21 0.02 50 / 0.05);
+  --shadow-sm: 0 1px 2px oklch(0.21 0.02 50 / 0.05), 0 6px 18px -12px oklch(0.21 0.02 50 / 0.18);
+  --shadow-md: 0 10px 32px -18px oklch(0.21 0.02 50 / 0.3);
+  --shadow-lg: 0 28px 64px -30px oklch(0.21 0.02 50 / 0.35);
+
+  /* Vertical rhythm between page sections. */
+  --section-y: 3.5rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --section-y: 5rem;
+  }
 }
 
 @layer base {
@@ -67,19 +84,102 @@
     border-color: var(--color-border);
   }
 
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
   }
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
     font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    line-height: 1.18;
+    text-wrap: balance;
   }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* One visible focus treatment for every interactive element. */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-foreground);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Layout ---------- */
+
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 72rem;
+  padding-inline: 1.25rem;
+  @media (min-width: 640px) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility section-y {
+  padding-block: var(--section-y);
+}
+
+@utility stack-lg {
+  & > * + * {
+    margin-top: var(--section-y);
+  }
+}
+
+/* ---------- Typography ---------- */
+
+@utility eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  /* 12px floor: uppercase + wide tracking below this is hard to read. */
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: oklch(0.52 0.075 72);
+}
+
+/* Component-level titles (cards, panels): the display serif has a single weight
+   and reads weak below ~1.25rem, so small titles use the sans instead. */
+@utility card-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-primary);
 }
 
 @utility text-gold {
@@ -89,48 +189,226 @@
   color: transparent;
 }
 
+@utility lede {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--color-muted-foreground);
+  max-width: 44rem;
+}
+
+/* Proper list markers — replaces the "• " typed into list text. */
+@utility list-marked {
+  list-style: none;
+  padding: 0;
+  & > li {
+    position: relative;
+    padding-left: 1.4rem;
+  }
+  & > li::before {
+    content: "";
+    position: absolute;
+    left: 0.25rem;
+    top: 0.65em;
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 9999px;
+    background: var(--color-accent);
+  }
+}
+
+/* ---------- Surfaces ---------- */
+
 @utility surface-card {
   background-color: var(--color-card);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-soft);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+}
+
+@utility rule-gold {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent) 0%,
+    color-mix(in oklch, var(--color-accent) 20%, transparent) 100%
+  );
+}
+
+@utility card-interactive {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: color-mix(in oklch, var(--color-accent) 45%, var(--color-border));
+  }
+}
+
+/* ---------- Buttons ---------- */
+
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.6875rem 1.5rem;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.12s ease;
+  &:active {
+    transform: translateY(1px);
+  }
+  &:disabled,
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.55;
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 @utility btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 9999px;
-  padding: 0.75rem 1.75rem;
-  font-weight: 600;
-  font-size: 0.95rem;
   background-color: var(--color-primary);
   color: var(--color-primary-foreground);
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-@utility btn-primary-hover {
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-xs);
+  &:hover:not(:disabled) {
+    background-color: color-mix(in oklch, var(--color-primary) 88%, black);
+    box-shadow: var(--shadow-md);
+  }
 }
 
 @utility btn-gold {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 9999px;
-  padding: 0.75rem 1.75rem;
-  font-weight: 600;
-  font-size: 0.95rem;
   background: var(--gradient-gold);
-  color: oklch(0.22 0.05 40);
-  transition: transform 0.2s ease;
+  color: oklch(0.2 0.05 40);
+  box-shadow: var(--shadow-xs);
+  &:hover:not(:disabled) {
+    filter: brightness(1.05);
+    box-shadow: var(--shadow-md);
+  }
 }
 
-@utility eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--color-accent);
+@utility btn-outline {
+  background-color: transparent;
+  border-color: var(--color-input);
+  color: var(--color-foreground);
+  &:hover:not(:disabled) {
+    background-color: var(--color-secondary);
+    border-color: color-mix(in oklch, var(--color-primary) 35%, var(--color-input));
+  }
+}
+
+@utility btn-ghost {
+  background-color: transparent;
+  color: var(--color-primary);
+  &:hover:not(:disabled) {
+    background-color: color-mix(in oklch, var(--color-primary) 8%, transparent);
+  }
+}
+
+/* On dark photography. */
+@utility btn-on-image {
+  background-color: oklch(1 0 0 / 0.1);
+  border-color: oklch(1 0 0 / 0.55);
+  color: var(--color-primary-foreground);
+  backdrop-filter: blur(4px);
+  &:hover:not(:disabled) {
+    background-color: oklch(1 0 0 / 0.2);
+    border-color: oklch(1 0 0 / 0.8);
+  }
+}
+
+@utility btn-sm {
+  min-height: 2.25rem;
+  padding: 0.4375rem 1rem;
+  font-size: 0.875rem;
+}
+
+@utility btn-block {
+  width: 100%;
+}
+
+/* ---------- Forms ---------- */
+
+@utility field {
+  display: block;
+  width: 100%;
+  min-height: 2.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-input);
+  background-color: var(--color-card);
+  padding: 0.625rem 0.875rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--color-foreground);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+  &::placeholder {
+    color: color-mix(in oklch, var(--color-muted-foreground) 75%, transparent);
+  }
+  &:hover:not(:disabled) {
+    border-color: color-mix(in oklch, var(--color-primary) 30%, var(--color-input));
+  }
+  &:focus {
+    outline: none;
+    border-color: var(--color-ring);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-ring) 25%, transparent);
+  }
+  &[aria-invalid="true"] {
+    border-color: var(--color-destructive);
+    &:focus {
+      box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-destructive) 22%, transparent);
+    }
+  }
+}
+
+@utility field-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+  margin-bottom: 0.375rem;
+}
+
+/* ---------- Utilities ---------- */
+
+@utility skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  font-weight: 600;
+  transition: top 0.18s ease;
+  &:focus {
+    top: 0;
+  }
+}
+
+/* Touch devices get the full 44px target; pointer devices keep lists compact. */
+@utility tap-safe {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  @media (pointer: coarse) {
+    min-height: 2.75rem;
+  }
 }

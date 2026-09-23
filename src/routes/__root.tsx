@@ -4,15 +4,17 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
-import { Header, Footer } from "../components/SiteChrome";
 
+/** Public-directory asset URL, prefixed with Vite's base ("/" locally). */
+const asset = (file: string) => `${import.meta.env.BASE_URL}${file.replace(/^\//, "")}`;
+import { Header, Footer, MobileActionBar } from "../components/SiteChrome";
 
 function NotFoundComponent() {
   return (
@@ -24,10 +26,7 @@ function NotFoundComponent() {
           The page you're looking for doesn't exist or has been moved.
         </p>
         <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
+          <Link to="/" className="btn btn-primary">
             Go home
           </Link>
         </div>
@@ -39,9 +38,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -58,14 +54,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="btn btn-primary"
           >
             Try again
           </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
+          <a href="/" className="btn btn-outline">
             Go home
           </a>
         </div>
@@ -86,7 +79,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "SV Caterers and Events, Amberpet Hyderabad. Wedding, engagement and birthday catering with veg and non-veg menus, cooked fresh on site.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "SV Caterers and Events" },
+      { property: "og:image", content: asset("sv-logo.png") },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: asset("sv-logo.png") },
     ],
     links: [
       {
@@ -97,9 +93,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600;700&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: asset("sv-logo.png"), type: "image/png" },
+      { rel: "apple-touch-icon", href: asset("apple-touch-icon.png") },
+      { rel: "icon", href: asset("favicon.ico"), type: "image/x-icon" },
     ],
   }),
 
@@ -115,7 +113,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="min-h-screen">
         {children}
         <Scripts />
       </body>
@@ -125,14 +123,25 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  // The quote builder has its own sticky step bar; two stacked bars would eat
+  // the viewport on a phone.
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const showActionBar = !pathname.startsWith("/quote");
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Header />
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-      <Footer />
+      <div className="flex min-h-screen flex-col">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <Header />
+        <div id="main" className="flex-1">
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </div>
+        {showActionBar && <MobileActionBar />}
+        <Footer />
+      </div>
     </QueryClientProvider>
   );
-
 }

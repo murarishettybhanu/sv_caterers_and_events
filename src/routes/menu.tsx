@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PageHeader, Section } from "@/components/Page";
 import biryaniImg from "@/assets/dish-biryani.jpg";
 import counterImg from "@/assets/live-counter.jpg";
 
@@ -62,55 +63,62 @@ const sections = [
 
 function Menu() {
   return (
-    <main className="mx-auto max-w-6xl px-5 py-14">
-      <p className="eyebrow">Menu</p>
-      <h1 className="mt-2 text-4xl text-primary">Sample menus you can build on</h1>
-      <p className="mt-4 max-w-2xl text-muted-foreground">
-        Every menu is customised to your function, guest count and budget. Here is a taste of what
-        our kitchen regularly prepares.
-      </p>
+    <main>
+      <PageHeader
+        eyebrow="Menu"
+        title="Sample menus you can build on"
+        intro="Every menu is customised to your function, guest count and budget. Here is a taste of what our kitchen regularly prepares — or build your own list in a few taps."
+        actions={
+          <Link to="/quote" className="btn btn-primary">
+            Build your menu
+          </Link>
+        }
+      />
 
-      <div className="mt-10 grid gap-6 md:grid-cols-2">
-        {sections.map((s) => (
-          <section key={s.name} className="surface-card p-7">
-            <h2 className="text-xl text-primary">{s.name}</h2>
-            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-              {s.items.map((i) => (
-                <li key={i}>• {i}</li>
-              ))}
-            </ul>
-          </section>
-        ))}
-      </div>
+      <Section>
+        <div className="grid gap-5 md:grid-cols-2">
+          {sections.map((s) => (
+            <section key={s.name} className="surface-card p-6 sm:p-7">
+              <h2 className="card-title text-lg sm:text-xl">{s.name}</h2>
+              <ul className="list-marked mt-4 space-y-2 text-sm text-muted-foreground">
+                {s.items.map((i) => (
+                  <li key={i}>{i}</li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
 
-      <div className="mt-12 grid gap-6 sm:grid-cols-2">
-        <img
-          src={biryaniImg}
-          alt="Hyderabadi biryani in a copper handi"
-          loading="lazy"
-          width={1024}
-          height={768}
-          className="h-72 w-full rounded-2xl object-cover"
-        />
-        <img
-          src={counterImg}
-          alt="Live snack and sweet counter served by chefs at a party"
-          loading="lazy"
-          width={1024}
-          height={768}
-          className="h-72 w-full rounded-2xl object-cover"
-        />
-      </div>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2">
+          <img
+            src={biryaniImg}
+            alt="Hyderabadi biryani in a copper handi"
+            loading="lazy"
+            width={1024}
+            height={768}
+            className="h-56 w-full rounded-2xl object-cover sm:h-72"
+          />
+          <img
+            src={counterImg}
+            alt="Live snack and sweet counter served by chefs at a party"
+            loading="lazy"
+            width={1024}
+            height={768}
+            className="h-56 w-full rounded-2xl object-cover sm:h-72"
+          />
+        </div>
 
-      <div className="surface-card mt-12 px-8 py-10 text-center">
-        <h2 className="text-2xl text-primary">Want a menu priced for your date?</h2>
-        <p className="mt-2 text-muted-foreground">
-          Share your guest count and we will put together options at different price points.
-        </p>
-        <Link to="/contact" className="btn-gold mt-6">
-          Get a quote
-        </Link>
-      </div>
+        <div className="surface-card mt-10 px-6 py-10 text-center sm:px-8 sm:py-12">
+          <h2 className="text-2xl text-primary sm:text-3xl">Want a menu priced for your date?</h2>
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+            Pick your dishes category by category and download the menu as a PDF — then share it
+            with us for rates.
+          </p>
+          <Link to="/quote" className="btn btn-gold mt-7">
+            Build your menu
+          </Link>
+        </div>
+      </Section>
     </main>
   );
 }

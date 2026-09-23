@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PageHeader, Section } from "@/components/Page";
 import heroImg from "@/assets/hero-catering.jpg";
 import { BUSINESS } from "@/components/SiteChrome";
 
@@ -39,23 +40,23 @@ const values = [
 function About() {
   return (
     <main>
-      <section className="mx-auto max-w-6xl px-5 py-14">
-        <p className="eyebrow">About</p>
-        <h1 className="mt-2 text-4xl text-primary">Sixteen years of feeding Hyderabad</h1>
-        <div className="mt-8 grid items-start gap-10 md:grid-cols-2">
+      <PageHeader eyebrow="About" title="Sixteen years of feeding Hyderabad" />
+
+      <Section>
+        <div className="grid items-start gap-8 md:grid-cols-2 md:gap-12">
           <img
             src={heroImg}
             alt="Traditional catering buffet at an Indian wedding"
             loading="lazy"
             width={1920}
             height={1088}
-            className="rounded-2xl object-cover"
+            className="aspect-[4/3] w-full rounded-2xl object-cover shadow-[var(--shadow-md)]"
           />
           <div className="text-muted-foreground">
             <p>
               {BUSINESS.name} began as a family kitchen in Srinagar Colony, Amberpet, cooking for
-              neighbourhood weddings and ceremonies. Sixteen years later we still cook the same
-              way — traditional Telugu and Hyderabadi recipes, prepared at the venue by a team that
+              neighbourhood weddings and ceremonies. Sixteen years later we still cook the same way
+              — traditional Telugu and Hyderabadi recipes, prepared at the venue by a team that
               treats your guests as their own.
             </p>
             <p className="mt-4">
@@ -63,24 +64,43 @@ function About() {
               guests, along with the event setup that goes with them. Our customers rate us{" "}
               {BUSINESS.rating} out of 5, and most of our work still comes through word of mouth.
             </p>
-            <p className="mt-4">
-              {BUSINESS.address}. {BUSINESS.hours}.
-            </p>
-            <Link to="/contact" className="btn-primary hover:btn-primary-hover mt-7">
-              Talk to us
-            </Link>
+            <dl className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="surface-card p-4">
+                <dt className="eyebrow">Kitchen</dt>
+                <dd className="mt-1.5 text-sm text-foreground">{BUSINESS.address}</dd>
+              </div>
+              <div className="surface-card p-4">
+                <dt className="eyebrow">Hours</dt>
+                <dd className="mt-1.5 text-sm text-foreground">{BUSINESS.hours}</dd>
+                <dd className="mt-2 text-sm">
+                  <a href={BUSINESS.phoneHref} className="font-medium text-primary hover:underline">
+                    {BUSINESS.phone}
+                  </a>
+                </dd>
+              </div>
+            </dl>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link to="/quote" className="btn btn-primary">
+                Build your menu
+              </Link>
+              <Link to="/contact" className="btn btn-outline">
+                Talk to us
+              </Link>
+            </div>
           </div>
         </div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
+        <ul className="mt-12 grid gap-5 md:grid-cols-3">
           {values.map((v) => (
-            <article key={v.title} className="surface-card p-6">
-              <h2 className="text-xl text-primary">{v.title}</h2>
-              <p className="mt-2 text-sm text-muted-foreground">{v.text}</p>
-            </article>
+            <li key={v.title}>
+              <article className="surface-card h-full p-6">
+                <h2 className="card-title text-lg sm:text-xl">{v.title}</h2>
+                <p className="mt-2 text-sm text-muted-foreground">{v.text}</p>
+              </article>
+            </li>
           ))}
-        </div>
-      </section>
+        </ul>
+      </Section>
     </main>
   );
 }

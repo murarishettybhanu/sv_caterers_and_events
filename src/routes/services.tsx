@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PageHeader, Section, SectionHeading } from "@/components/Page";
+import { BUSINESS } from "@/components/SiteChrome";
 import eventImg from "@/assets/event-setup.jpg";
 
 export const Route = createFileRoute("/services")({
@@ -59,45 +61,64 @@ const inclusions = [
 
 function Services() {
   return (
-    <main className="mx-auto max-w-6xl px-5 py-14">
-      <p className="eyebrow">Services</p>
-      <h1 className="mt-2 text-4xl text-primary">Catering for every kind of gathering</h1>
-      <p className="mt-4 max-w-2xl text-muted-foreground">
-        We cater across Hyderabad — Amberpet, Ramanthapur, Uppal, Dilsukhnagar, Secunderabad and
-        beyond — for functions from fifty guests to two thousand.
-      </p>
+    <main>
+      <PageHeader
+        eyebrow="Services"
+        title="Catering for every kind of gathering"
+        intro="We cater across Hyderabad — Amberpet, Ramanthapur, Uppal, Dilsukhnagar, Secunderabad and beyond — for functions from fifty guests to two thousand."
+        actions={
+          <>
+            <Link to="/quote" className="btn btn-primary">
+              Build your menu
+            </Link>
+            <a href={BUSINESS.phoneHref} className="btn btn-outline">
+              Call {BUSINESS.phone}
+            </a>
+          </>
+        }
+      />
 
-      <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {services.map((s) => (
-          <article key={s.title} className="surface-card p-6">
-            <h2 className="text-xl text-primary">{s.title}</h2>
-            <p className="mt-2 text-sm text-muted-foreground">{s.text}</p>
-          </article>
-        ))}
-      </div>
+      <Section>
+        <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {services.map((s) => (
+            <li key={s.title}>
+              <article className="surface-card card-interactive h-full p-6">
+                <h2 className="card-title text-lg sm:text-xl">{s.title}</h2>
+                <p className="mt-2 text-sm text-muted-foreground">{s.text}</p>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-      <section className="mt-16 grid items-center gap-10 md:grid-cols-2">
-        <img
-          src={eventImg}
-          alt="Outdoor event dining setup with floral centrepieces and string lights"
-          loading="lazy"
-          width={1024}
-          height={768}
-          className="rounded-2xl object-cover"
-        />
-        <div>
-          <p className="eyebrow">What's included</p>
-          <h2 className="mt-2 text-3xl text-primary">One team, start to finish</h2>
-          <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
-            {inclusions.map((i) => (
-              <li key={i}>• {i}</li>
-            ))}
-          </ul>
-          <Link to="/contact" className="btn-primary hover:btn-primary-hover mt-7">
-            Ask for pricing
-          </Link>
+      <Section>
+        <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12">
+          <img
+            src={eventImg}
+            alt="Outdoor event dining setup with floral centrepieces and string lights"
+            loading="lazy"
+            width={1024}
+            height={768}
+            className="aspect-[4/3] w-full rounded-2xl object-cover shadow-[var(--shadow-md)]"
+          />
+          <div>
+            <SectionHeading eyebrow="What's included" title="One team, start to finish" />
+            <ul className="list-marked mt-5 space-y-2 text-sm text-muted-foreground">
+              {inclusions.map((i) => (
+                <li key={i}>{i}</li>
+              ))}
+            </ul>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link to="/quote" className="btn btn-primary">
+                Get a quote
+              </Link>
+              <Link to="/contact" className="btn btn-outline">
+                Ask a question
+              </Link>
+            </div>
+          </div>
         </div>
-      </section>
+      </Section>
     </main>
   );
 }

@@ -4,6 +4,7 @@ import biryaniImg from "@/assets/dish-biryani.jpg";
 import eventImg from "@/assets/event-setup.jpg";
 import counterImg from "@/assets/live-counter.jpg";
 import { BUSINESS } from "@/components/SiteChrome";
+import { Section, SectionHeading } from "@/components/Page";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -53,13 +54,14 @@ const services = [
 function Home() {
   return (
     <main>
-      <section className="relative">
+      <section className="relative isolate">
         <img
           src={heroImg}
-          alt="Traditional South Indian wedding catering buffet with brass vessels and banana leaf"
+          alt=""
           width={1920}
           height={1088}
-          className="h-[78vh] w-full object-cover"
+          fetchPriority="high"
+          className="h-[70vh] min-h-[28rem] w-full object-cover sm:h-[76vh]"
         />
         <div
           className="absolute inset-0"
@@ -67,113 +69,125 @@ function Home() {
           aria-hidden="true"
         />
         <div className="absolute inset-0 flex items-end">
-          <div className="mx-auto w-full max-w-6xl px-5 pb-14">
-            <p className="eyebrow">{BUSINESS.area}</p>
-            <h1 className="mt-3 max-w-3xl text-4xl leading-tight text-primary-foreground sm:text-6xl">
+          <div className="container-page pb-12 sm:pb-16">
+            <p className="eyebrow text-accent">{BUSINESS.area}</p>
+            <h1 className="mt-3 max-w-3xl text-[2.25rem] leading-[1.1] text-primary-foreground sm:text-5xl lg:text-6xl">
               Food that makes your <span className="text-gold">celebration</span> unforgettable
             </h1>
-            <p className="mt-4 max-w-xl text-base text-primary-foreground/85">
+            <p className="mt-4 max-w-xl text-[1.0625rem] text-primary-foreground/90">
               {BUSINESS.tagline} Weddings, engagements, birthdays and corporate events across
               Hyderabad.
             </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link to="/contact" className="btn-gold">
-                Request a quote
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link to="/quote" className="btn btn-gold">
+                Build your menu
               </Link>
-              <Link
-                to="/menu"
-                className="inline-flex items-center rounded-full border border-primary-foreground/40 px-7 py-3 text-sm font-semibold text-primary-foreground"
-              >
-                See the menu
-              </Link>
+              <a href={BUSINESS.phoneHref} className="btn btn-on-image">
+                Call {BUSINESS.phone}
+              </a>
             </div>
+            <p className="mt-5 text-sm text-primary-foreground/75">
+              Rated {BUSINESS.rating} · {BUSINESS.years} · {BUSINESS.hours}
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-14">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Two columns on phones keeps four numbers to one glance instead of a screenful. */}
+      <Section className="pb-2 sm:pb-4">
+        <dl className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
           {highlights.map((h) => (
-            <div key={h.label} className="surface-card p-6">
-              <p className="font-[family-name:var(--font-display)] text-2xl text-primary">
-                {h.value}
-              </p>
-              <p className="mt-1 text-sm text-muted-foreground">{h.label}</p>
+            <div key={h.label} className="surface-card p-4 sm:p-6">
+              <dt className="sr-only">{h.label}</dt>
+              <dd>
+                <p className="font-[family-name:var(--font-display)] text-xl text-primary sm:text-2xl">
+                  {h.value}
+                </p>
+                <p className="mt-1 text-[0.8125rem] leading-snug text-muted-foreground sm:text-sm">
+                  {h.label}
+                </p>
+              </dd>
             </div>
           ))}
-        </div>
-      </section>
+        </dl>
+      </Section>
 
-      <section className="mx-auto max-w-6xl px-5 pb-6">
-        <p className="eyebrow">What we cater</p>
-        <h2 className="mt-2 text-3xl text-primary sm:text-4xl">Every occasion, cooked on site</h2>
-        <div className="mt-8 grid gap-7 md:grid-cols-3">
+      <Section>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <SectionHeading eyebrow="What we cater" title="Every occasion, cooked on site" />
+          <Link to="/services" className="btn btn-ghost btn-sm">
+            All services →
+          </Link>
+        </div>
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
           {services.map((s) => (
-            <article key={s.title} className="surface-card overflow-hidden">
+            <article key={s.title} className="surface-card card-interactive overflow-hidden">
               <img
                 src={s.image}
-                alt={s.title}
+                alt=""
                 loading="lazy"
                 width={1024}
                 height={768}
-                className="h-52 w-full object-cover"
+                className="h-48 w-full object-cover sm:h-52"
               />
               <div className="p-6">
-                <h3 className="text-xl text-primary">{s.title}</h3>
+                <h3 className="card-title text-lg sm:text-xl">{s.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{s.text}</p>
               </div>
             </article>
           ))}
         </div>
-        <div className="mt-8">
-          <Link to="/services" className="btn-primary hover:btn-primary-hover">
-            All services
-          </Link>
-        </div>
-      </section>
+      </Section>
 
-      <section className="mx-auto mt-16 max-w-6xl px-5">
-        <div className="grid items-center gap-10 md:grid-cols-2">
+      <Section>
+        <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12">
           <img
             src={biryaniImg}
             alt="Hyderabadi biryani served in a copper handi with raita and shorba"
             loading="lazy"
             width={1024}
             height={768}
-            className="rounded-2xl object-cover"
+            className="aspect-[4/3] w-full rounded-2xl object-cover shadow-[var(--shadow-md)]"
           />
           <div>
-            <p className="eyebrow">Since 2009</p>
-            <h2 className="mt-2 text-3xl text-primary">A family kitchen, scaled for your crowd</h2>
+            <SectionHeading eyebrow="Since 2009" title="A family kitchen, scaled for your crowd" />
             <p className="mt-4 text-muted-foreground">
               We started as a small Amberpet kitchen and have spent sixteen years cooking for
               Hyderabad families. Every menu is planned with you, priced clearly, and prepared at
               your venue so the food reaches guests hot.
             </p>
-            <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
-              <li>• Pure veg and non-veg kitchens handled separately</li>
-              <li>• Uniformed serving staff, crockery and counters included</li>
-              <li>• Tastings before you confirm the final menu</li>
+            <ul className="list-marked mt-5 space-y-2 text-sm text-muted-foreground">
+              <li>Pure veg and non-veg kitchens handled separately</li>
+              <li>Uniformed serving staff, crockery and counters included</li>
+              <li>Tastings before you confirm the final menu</li>
             </ul>
-            <Link to="/about" className="btn-primary hover:btn-primary-hover mt-7">
+            <Link to="/about" className="btn btn-outline mt-7">
               Our story
             </Link>
           </div>
         </div>
-      </section>
+      </Section>
 
-      <section className="mx-auto mt-20 max-w-6xl px-5">
-        <div className="surface-card px-8 py-12 text-center">
+      <Section>
+        <div className="surface-card overflow-hidden px-6 py-12 text-center sm:px-10 sm:py-14">
           <p className="eyebrow">Planning a function?</p>
-          <h2 className="mt-2 text-3xl text-primary">Tell us the date and guest count</h2>
+          <h2 className="mt-2.5 text-2xl text-primary sm:text-3xl">
+            Tell us the date and guest count
+          </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Send your requirement and we will come back with a menu and a price for your budget.
+            Pick your dishes in a few taps, download the menu as a PDF, and we will come back with a
+            price for your budget.
           </p>
-          <Link to="/contact" className="btn-gold mt-7">
-            Enquire now
-          </Link>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link to="/quote" className="btn btn-primary w-full sm:w-auto">
+              Build your menu
+            </Link>
+            <Link to="/contact" className="btn btn-outline w-full sm:w-auto">
+              Send an enquiry
+            </Link>
+          </div>
         </div>
-      </section>
+      </Section>
     </main>
   );
 }
